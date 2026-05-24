@@ -1,5 +1,5 @@
 resource "aws_instance" "app" {
-  instance_type     = "t3.micro"
+  instance_type     = var.instance_type
   availability_zone = "us-east-1a"
   ami               = "ami-02fd066b86800f60c" # Ubuntu 22.04 LTS in us-east-1 (latest)
 
@@ -12,6 +12,6 @@ resource "aws_instance" "app" {
   EOF
 
   tags = {
-    Name = "terraform-in-depth-lab"
+    Name = var.instance_name
   }
 }
