@@ -1,0 +1,10 @@
+#!/bin/bash
+%{ if enable_apache ~}
+apt-get update -y
+apt-get install -y apache2 ${join(" ", extra_pkgs)}
+systemctl start apache2
+systemctl enable apache2
+echo "Hello from advanced-variables demo instance $(hostname -f)" > /var/www/html/index.html
+%{ else ~}
+echo "Apache installation skipped per configuration."
+%{ endif ~}

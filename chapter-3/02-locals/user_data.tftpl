@@ -1,0 +1,16 @@
+#!/bin/bash
+apt-get update -y
+apt-get install -y apache2
+systemctl start apache2
+systemctl enable apache2
+cat > /var/www/html/index.html <<EOF
+<html>
+  <head><title>${env_name} server</title></head>
+  <body>
+    <h1>Hello from ${project}</h1>
+    <p>Environment: ${env_name}</p>
+    <p>Hostname: $(hostname -f)</p>
+    <p>Feature flags: ${feature_flags}</p>
+  </body>
+</html>
+EOF
