@@ -11,7 +11,7 @@ variable "remote_state_bucket" {
 variable "remote_state_key" {
   description = "The S3 key (path) of the source project's state file"
   type        = string
-  default     = "terraform-module-demo/terraform.tfstate"
+  default     = "05-module-consumer/terraform.tfstate"
 }
 
 variable "remote_state_region" {
