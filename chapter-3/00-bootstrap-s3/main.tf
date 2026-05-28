@@ -10,8 +10,8 @@
 resource "aws_s3_bucket" "terraform_state" {
   bucket = var.state_bucket_name
 
-  # Prevent accidental deletion of this bucket
-  force_destroy = false
+  # Allow destruction even if bucket has versioned objects
+  force_destroy = true
 
   tags = {
     Name        = "Terraform State Storage"
