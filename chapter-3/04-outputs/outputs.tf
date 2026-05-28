@@ -38,9 +38,11 @@ output "api_key_preview" {
 }
 
 output "api_key_sha256" {
-  description = "SHA256 hash of the API key (safe for logging/comparison)"
+  description = "SHA256 hash of the API key (derived from sensitive var.api_key)"
   value       = sha256(var.api_key)
-  # NOTE: Not marked sensitive — hashes can safely be exposed
+  # Terraform 1.8+ dataflow tracking: any output derived from a sensitive
+  # variable must be marked sensitive, even if it's a one-way hash.
+  sensitive   = true
 }
 
 # ──────────────────────────────────────────────────────────────────────────────
