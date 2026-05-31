@@ -213,16 +213,16 @@ output "db_sg_id"    { value = aws_security_group.mysql.id }
 ```hcl
 terraform {
   backend "s3" {
-    bucket  = "terraform-in-depth-state-582381606543"
+    bucket  = "acme-state-bucket"
     key     = "stage/webserver-cluster/terraform.tfstate"
     region  = "us-east-1"
-    profile = "terraform-in-depth"
+    profile = "company-profile"
   }
 }
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "terraform-in-depth"
+  profile = "company-profile"
 }
 
 data "aws_vpc" "default" { default = true }

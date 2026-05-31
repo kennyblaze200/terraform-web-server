@@ -82,11 +82,11 @@ flowchart TB
 **Command:**
 
 ```bash
-cd /d C:\Users\T490\Documents\modulo-vault\terraform-aws-modules
+cd /d C:\Users\DevUser\Documents\project
 terraform destroy -auto-approve
 ```
 
-**Expected result:** EC2 instance `i-08bd5d1cf82f75a1d` and security group `sg-0f3bfe51e8452209f` are terminated.
+**Expected result:** EC2 instance `i-0a1b2c3d4e5f6a7b8` and security group `sg-0a1b2c3d4e5f6a7b8` are terminated.
 
 ---
 
@@ -102,7 +102,7 @@ mkdir webserver-cluster
 
 ### Step 3: Create `webserver-cluster/providers.tf`
 
-**Content:** Same provider configuration as the root [`providers.tf`](../providers.tf) — region `us-east-1`, profile `terraform-in-depth`, AWS provider `~> 5.0`, Terraform `>= 1.0.0, < 2.0.0`.
+**Content:** Same provider configuration as the root [`providers.tf`](../providers.tf) — region `us-east-1`, profile `company-profile`, AWS provider `~> 5.0`, Terraform `>= 1.0.0, < 2.0.0`.
 
 ```hcl
 terraform {
@@ -118,7 +118,7 @@ terraform {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "terraform-in-depth"
+  profile = "company-profile"
 }
 ```
 
@@ -147,7 +147,7 @@ provider "aws" {
 | 2   | `data.aws_subnets.default`         | Filters by VPC ID — finds all subnets                                                                   |
 | 3   | `aws_security_group.instance`      | Inbound on `var.server_port` from anywhere                                                              |
 | 4   | `aws_security_group.alb`           | Inbound port 80, all outbound                                                                           |
-| 5   | `aws_launch_configuration.example` | AMI `ami-02fd066b86800f60c`, `t3.micro`, Apache user_data, `lifecycle { create_before_destroy = true }` |
+| 5   | `aws_launch_configuration.example` | AMI `ami-0abc1234def567890`, `t3.micro`, Apache user_data, `lifecycle { create_before_destroy = true }` |
 | 6   | `aws_autoscaling_group.example`    | Launch config, subnets, target group, min=2, max=10                                                     |
 | 7   | `aws_lb.example`                   | ALB, internet-facing, subnets, ALB SG                                                                   |
 | 8   | `aws_lb_listener.http`             | Port 80, default 404                                                                                    |
@@ -157,9 +157,9 @@ provider "aws" {
 **Key differences from the book's code:**
 
 - Use `t3.micro` instead of `t2.micro` (free-tier eligible)
-- Use `us-east-1` AMI (`ami-02fd066b86800f60c`) instead of `us-east-2` AMI
+- Use `us-east-1` AMI (`ami-0abc1234def567890`) instead of `us-east-2` AMI
 - Use Apache (`apt-get install apache2`) instead of `busybox httpd`
-- Use our profile (`terraform-in-depth`) instead of default credentials
+- Use our profile (`company-profile`) instead of default credentials
 
 **Apache user_data:**
 
@@ -190,7 +190,7 @@ output "alb_dns_name" {
 ### Step 7: `terraform init` + `terraform plan` in `webserver-cluster/`
 
 ```bash
-cd /d C:\Users\T490\Documents\modulo-vault\terraform-aws-modules\webserver-cluster
+cd /d C:\Users\DevUser\Documents\project\webserver-cluster
 terraform init
 terraform plan
 ```
@@ -229,7 +229,7 @@ terraform output alb_dns_name
 Or via AWS CLI:
 
 ```bash
-aws elbv2 describe-load-balancers --names terraform-asg-example --profile terraform-in-depth --region us-east-1 --query "LoadBalancers[0].DNSName" --output text
+aws elbv2 describe-load-balancers --names terraform-asg-example --profile company-profile --region us-east-1 --query "LoadBalancers[0].DNSName" --output text
 ```
 
 Open `http://<alb-dns-name>` in browser. You should see:
@@ -242,7 +242,7 @@ Open `http://<alb-dns-name>` in browser. You should see:
 ### Step 10: Commit and push to GitHub
 
 ```bash
-cd /d C:\Users\T490\Documents\modulo-vault\terraform-aws-modules
+cd /d C:\Users\DevUser\Documents\project
 git add .
 git commit -m "feat: add webserver-cluster with ASG and ALB"
 git push
